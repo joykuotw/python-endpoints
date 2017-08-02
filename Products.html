@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Products</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+$(document).ready(function () {
+	$( "#clear" ).click(function() {
+	  $( "#div1, #div2, #div3, #div4" ).hide( "slow" );
+	});
+});
+
+function getAll() {
+	fetch('http://localhost:8000/products', {method: 'GET'})
+	.then(function(response) {
+		return response.json()
+	}).then(function(data) {
+		$( "#div1" ).empty();
+		$( "#div1" ).show( "slow" );
+		$( "#div1" ).append(
+		    $.map(data, function (item, index) {
+		    	return '<tr><td>' + item[0] + '</td><td>' + item[1] + '</td><td>' + item[2] + '</td><td>' + item[3] + '</td></tr>';
+		}).join());
+		$("table, td").addClass("tableStyle");
+	}).catch(function(err) {
+	    alert(err);
+	})
+}
+
+function getProdcutById() {
+	let id = $( "#productId" ).val();
+	if(id && id != 1){
+		fetch('http://localhost:8000/product/' + id, {method: 'GET'})
+		.then(function(response) {
+			return response.json()
+		}).then(function(data) {
+			$( "#div2" ).show( "slow" );
+			$( "#div2" ).html(
+			   '<tr><td>Title</td><td>Description</td><td>Price</td></tr>' +		    
+			   '<tr><td>' + data[1] + '</td><td>' + data[2] + '</td><td>' + data[3] + '</td></tr>');
+			
+			$("table, td").addClass("tableStyle");
+		}).catch(function() {
+		    alert("Please provide correct id!");
+		})
+	} else {
+		alert('Please provide id!')
+	}
+}
+
+function insertProduct() {
+	let title = $( "#title" ).val()
+	let desc = $( "#desc" ).val()
+    let price = $( "#price" ).val()
+    if(title && desc && price){
+		fetch('http://localhost:8000/product', 
+		  {method: 'POST',
+		   headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+	       body: JSON.stringify({
+	         title: title, 
+	         desc: desc, 
+	         price: price
+	       })})
+		.then(function(response) {
+			return response.json()
+		}).then(function(data) {
+		    $( "#div3" ).empty();
+			$( "#div3" ).show( "slow" );
+			$( "#add" ).html(data);
+			$( "#add" ).css("color", "#F00");
+			$( "#div3" ).html(
+			   '<tr><td>Title</td><td>Description</td><td>Price</td></tr>' +		    
+			   '<tr><td>' + title + '</td><td>' + desc + '</td><td>' + price + '</td></tr>');
+			$("table, td").addClass("tableStyle");
+		}).catch(function(err) {
+		    alert(err);
+		})
+	} else {
+		alert('title/description/price cannot be empty!')
+	}
+}
+
+function updateProduct() {
+	let id = $( "#productId1" ).val()
+	let title = $( "#title1" ).val()
+	let desc = $( "#desc1" ).val()
+    let price = $( "#price1" ).val()
+
+    if(id && title && desc && price){
+		fetch('http://localhost:8000/product/' + id, 
+		  {method: 'PUT',
+		   headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+	       body: JSON.stringify({
+	         title: title, 
+	         desc: desc, 
+	         price: price
+	       })})
+		.then(function(response) {
+			return response.json()
+		}).then(function(data) {
+		    $( "#div4" ).empty();
+			$( "#div4" ).show( "slow" );
+			$( "#update" ).html(data);
+			$( "#update" ).css("color", "#F00");
+			$( "#div4" ).html(
+			   '<tr><td>Title</td><td>Description</td><td>Price</td></tr>' +		    
+			   '<tr><td>' + title + '</td><td>' + desc + '</td><td>' + price + '</td></tr>');
+			$("table, td").addClass("tableStyle");
+		}).catch(function(err) {
+		    alert(err);
+		})
+	} else {
+		alert('id/title/description/price cannot be empty!')
+	}
+}
+
+function deleteProdcutById() {
+	let id = $( "#productId2" ).val()
+    if(id){
+    	if(id != 1){
+		    fetch('http://localhost:8000/product/' + id,
+		      {method: 'DELETE',
+			   headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }})
+			.then(function(response) {
+				return response.json()
+			}).then(function(data) {
+				$( "#delete" ).html(data);
+				$( "#delete" ).css("color", "#F00");
+			}).catch(function(err) {
+			    alert(err);
+			})
+		} else {
+			alert('Row 1 cannot be deleted!')
+		}
+	} else {
+		alert('Please provide id!')
+	}
+}
+</script>
+
+<style>
+h2, p {
+	margin: 25px 30px;
+}
+
+button {
+	margin: 5px 30px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+    font-size : 15px;    
+}
+
+.tableStyle {
+	border: 1px solid black;
+    text-align: center;
+    margin: 20px;
+}
+</style>
+</head>
+
+<body>
+<img src="http://careerinteractive.org/storage/app/media/ciuk_logo.png" alt="CIUK">
+<button id="clear">Clear All Results</button>
+<hr>
+<h2> - All Products</h2>
+<button onclick="getAll()">List all products</button>
+<table id="div1"></table>
+
+<h2> - View selected product</h2>
+<p>Enter product id: <input type="text" id="productId" placeholder="product id"></p>
+<button onclick="getProdcutById()">Get Product</button>
+<table id="div2"></table>
+
+<h2> - Add new product</h2>
+<p>Title: <input type="text" id="title" placeholder="title"></p>
+<p>Description: <input type="text" id="desc" placeholder="description"></p>
+<p>Price: <input type="text" id="price" placeholder="price"></p>
+<button onclick="insertProduct()">Add Product</button>
+<p id="add" />
+<table id="div3"></table>
+
+<h2> - Update existing product</h2>
+<p>Product Id: <input type="text" id="productId1" placeholder="product id"></p>
+<p>Title: <input type="text" id="title1" placeholder="title"></p>
+<p>Description: <input type="text" id="desc1" placeholder="description"></p>
+<p>Price: <input type="text" id="price1" placeholder="price"></p>
+<button onclick="updateProduct()">Update Product</button>
+<p id="update" />
+<table id="div4"></table>
+
+<h2> - Delete product</h2>
+<p>Enter product id: <input type="text" id="productId2" placeholder="product id"></p>
+<button onclick="deleteProdcutById()">Delete Product</button>
+<p id="delete" />
+
+</body>
+</html>
