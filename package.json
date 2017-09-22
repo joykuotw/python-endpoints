@@ -1,7 +1,7 @@
 {
   "name": "python-endpoints",
   "version": "1.0.0",
-  "description": "An experiment to run python endpoints with simple frontend.",
+  "description": "An experiment to build a lightweight REST API using python [endpoints](https://github.com/firstopinion/endpoints) with simple frontend.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/joykuotw/python-endpoints.git"
   },
   "author": "Shan-Chun Kuo",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/joykuotw/python-endpoints/issues"
   },
