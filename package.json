@@ -1,0 +1,23 @@
+{
+  "name": "python-endpoints",
+  "version": "1.0.0",
+  "description": "An experiment to run python endpoints with simple frontend.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joykuotw/python-endpoints.git"
+  },
+  "author": "Shan-Chun Kuo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joykuotw/python-endpoints/issues"
+  },
+  "homepage": "https://github.com/joykuotw/python-endpoints#readme",
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}
