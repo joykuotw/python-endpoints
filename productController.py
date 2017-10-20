@@ -2,7 +2,7 @@ from endpoints import Controller, CorsMixin
 import sqlite3
 from datetime import datetime
 
-conn = sqlite3.connect('CIUK.db')
+conn = sqlite3.connect('databaseForTest.db')
 cur = conn.cursor()
 
 class Default(Controller, CorsMixin):
