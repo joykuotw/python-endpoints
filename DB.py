@@ -14,7 +14,7 @@ class createDB():
             conn = sqlite3.connect('databaseForTest.db')
             print 'DB Creation Successful!'
             cur = conn.cursor()
-            # cur.execute('''DROP TABLE PRODUCTS;''')
+            cur.execute('''DROP TABLE IF EXISTS PRODUCTS;''')
             cur.execute('''CREATE TABLE PRODUCTS
 			              (ID INTEGER PRIMARY KEY     AUTOINCREMENT,
 				           TITLE           TEXT    NOT NULL,
